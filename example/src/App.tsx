@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { PermissionsAndroid, Text } from 'react-native'
+import { PermissionsAndroid,  Text } from 'react-native'
 import {
   onBeaconScan,
   setBluetoothState,

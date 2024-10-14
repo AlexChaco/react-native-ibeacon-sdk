@@ -1,3 +1,4 @@
+
 # react-native-ibeacon-sdk
 
 react
@@ -31,3 +32,6 @@ MIT
 ---
 
 Made with [create-react-native-library](https://github.com/callstack/react-native-builder-bob)
+=======
+# react-native-ibeacon-sdk
+>>>>>>> eb7acf5b4bd12e04b005c122e98ec2d84bda4f53
