@@ -1,30 +1,62 @@
-import { useState, useEffect } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-ibeacon-sdk';
+import React, { useEffect } from 'react'
+import { PermissionsAndroid, Text } from 'react-native'
+import {
+  onBeaconScan,
+  setBluetoothState,
+  start,
+  stop,
+} from 'react-native-ibeacon-sdk'
 
-export default function App() {
-  const [result, setResult] = useState<number | undefined>();
-
-  useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
-
-  return (
-    <View style={styles.container}>
-      <Text>Result: {result}</Text>
-    </View>
-  );
+export async function requestLocationPermission() {
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      {
+        title: 'Example App',
+        message: 'Example App access to your location ',
+        buttonPositive: 'OK',
+        buttonNegative: 'Cancel',
+        buttonNeutral: 'Ask Me Later',
+      }
+    )
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      return true
+    } else {
+      return false
+    }
+  } catch (err) {
+    console.warn(err)
+    return false
+  }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
-  },
-});
+const App = () => {
+  useEffect(() => {
+    const scanner = onBeaconScan((beacons) => {
+      console.info('Beacons found: ', beacons.length)
+      console.info(JSON.stringify(beacons, undefined, 2))
+    })
+
+    requestLocationPermission()
+      .then(async (granted) => {
+        if (granted) {
+          console.log('turning bluetooth on...')
+          await setBluetoothState(true)
+        } else {
+          throw new Error('bluetooth permission not granted')
+        }
+      })
+      .then(() => start())
+      .then(() => console.info('scan started'))
+      .catch((err) => console.error('error', err))
+
+    return () => {
+      scanner.remove()
+      stop().catch((err: Error) => console.error('error stopping', err))
+    }
+  })
+
+  return <Text>Started! Please check react-native logs.</Text>
+}
+
+export default App
