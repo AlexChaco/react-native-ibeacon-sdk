@@ -1,93 +1,90 @@
-import {
-  DeviceEventEmitter,
-  EmitterSubscription,
-  NativeModules,
-} from 'react-native'
+import { DeviceEventEmitter, NativeModules } from 'react-native';
+import type { EmitterSubscription } from 'react-native'; // Update this line
 
 interface FrameiBeacon {
-  type: 'ibeacon'
-  uuid: string
-  major: number
-  minor: number
-  tx: number
+  type: 'ibeacon';
+  uuid: string;
+  major: number;
+  minor: number;
+  tx: number;
 }
 
 interface FrameUID {
-  type: 'uid'
-  instance: string
-  namespace: string
+  type: 'uid';
+  instance: string;
+  namespace: string;
 }
 
 interface FrameAccSensor {
-  type: 'accelerometer'
-  x: number
-  y: number
-  z: number
+  type: 'accelerometer';
+  x: number;
+  y: number;
+  z: number;
 }
 
 interface FrameHTSensor {
-  type: 'ht'
-  temperature: number
-  humidity: number
+  type: 'ht';
+  temperature: number;
+  humidity: number;
 }
 
 interface FrameTLM {
-  type: 'tlm'
-  temperature: number
-  batteryVol: number
-  secCount: number
-  advCount: number
+  type: 'tlm';
+  temperature: number;
+  batteryVol: number;
+  secCount: number;
+  advCount: number;
 }
 
 interface FrameURL {
-  type: 'url'
-  tx: number
-  url: string
+  type: 'url';
+  tx: number;
+  url: string;
 }
 
 interface FrameLightSensor {
-  type: 'light'
-  battery: number
-  lux: number
+  type: 'light';
+  battery: number;
+  lux: number;
 }
 
 interface FrameForceSensor {
-  type: 'force'
-  battery: number
-  force: number
+  type: 'force';
+  battery: number;
+  force: number;
 }
 
 interface FramePIRSensor {
-  type: 'pir'
-  battery: number
-  value: number
+  type: 'pir';
+  battery: number;
+  value: number;
 }
 
 interface FrameTempSensor {
-  type: 'temperature'
-  battery: number
-  value: number
+  type: 'temperature';
+  battery: number;
+  value: number;
 }
 
 interface FrameTVOCSensor {
-  type: 'tvoc'
-  battery: number
-  value: number
+  type: 'tvoc';
+  battery: number;
+  value: number;
 }
 
 interface FrameLineBeacon {
-  type: 'line'
-  hwid: string
-  tx: number
-  authentication: string
-  timestamp: number
+  type: 'line';
+  hwid: string;
+  tx: number;
+  authentication: string;
+  timestamp: number;
 }
 
 interface FrameDeviceInfo {
-  type: 'info'
-  mac: string
-  name: string
-  battery: number
+  type: 'info';
+  mac: string;
+  name: string;
+  battery: number;
 }
 
 export type Frame =
@@ -103,31 +100,31 @@ export type Frame =
   | FrameTempSensor
   | FrameTVOCSensor
   | FrameLineBeacon
-  | FrameDeviceInfo
+  | FrameDeviceInfo;
 
 export interface BeaconData {
-  mac: string
-  name: string
-  battery: number
-  rssi: number
-  lastUpdate: number
-  frames: Frame[]
+  mac: string;
+  name: string;
+  battery: number;
+  rssi: number;
+  lastUpdate: number;
+  frames: Frame[];
 }
 
 export function onBeaconScan(
   cb: (beacons: BeaconData[]) => void
 ): EmitterSubscription {
-  return DeviceEventEmitter.addListener('beacons', cb)
+  return DeviceEventEmitter.addListener('beacons', cb);
 }
 
 export function start(): Promise<void> {
-  return NativeModules.RNBeaconScannerModule.start()
+  return NativeModules.RNBeaconScannerModule.start();
 }
 
 export function stop(): Promise<void> {
-  return NativeModules.RNBeaconScannerModule.stop()
+  return NativeModules.RNBeaconScannerModule.stop();
 }
 
 export function setBluetoothState(enable: boolean = true): Promise<boolean> {
-  return NativeModules.RNBeaconScannerModule.setBluetoothState(enable)
+  return NativeModules.RNBeaconScannerModule.setBluetoothState(enable);
 }
