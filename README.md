@@ -8,7 +8,10 @@ react
 ```sh
 npm install react-native-ibeacon-sdk
 ```
-
+or
+```sh
+yarn add react-native-ibeacon-sdk
+```
 ## Usage
 
 
